@@ -1,31 +1,44 @@
 package com.driver.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "Users")
-public class User{
-
+@Table
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    int id;
 
-    @Column(unique = true,nullable = false)
-    private String username;
+    String username;
 
-    private String password;
+    String password;
 
-    private String firstName;
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    private String lastName;
+    String firstName;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private List<Blog> blogList;
+    String lastName;
 
-    public User(String userName, String password, String firstName, String lastName) {
-        this.username = userName;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("user")
+    List<Blog> blogList;
+
+    public User(String username, String password, String firstName, String lastName) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public User(int id, String username, String password, String firstName, String lastName) {
+        this.id = id;
+        this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -34,12 +47,16 @@ public class User{
     public User() {
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String userName) {
-        this.username = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -72,13 +89,5 @@ public class User{
 
     public void setBlogList(List<Blog> blogList) {
         this.blogList = blogList;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }

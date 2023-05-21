@@ -1,30 +1,40 @@
 package com.driver.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
 @Table
-public class Image{
-
+public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    int id;
 
-    private String description;
+    String description;
 
-    private String dimensions;
+    String dimensions;
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @ManyToOne
     @JoinColumn
-    private Blog blog;
+    @JsonIgnoreProperties("imageList")
+    Blog blog;
+
+    public Image() {
+    }
 
     public Image(String description, String dimensions) {
         this.description = description;
         this.dimensions = dimensions;
     }
 
-    public Image() {
+    public int getId() {
+        return id;
     }
 
     public String getDescription() {
@@ -51,12 +61,15 @@ public class Image{
         this.blog = blog;
     }
 
-    public int getId() {
-        return id;
+    public Image(String description, String dimensions, Blog blog) {
+        this.description = description;
+        this.dimensions = dimensions;
+        this.blog = blog;
     }
 
-    public void setId(int id) {
+    public Image(int id, String description, String dimensions) {
         this.id = id;
+        this.description = description;
+        this.dimensions = dimensions;
     }
-
 }

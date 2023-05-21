@@ -1,5 +1,6 @@
 package com.driver.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -7,28 +8,32 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "Blog")
+@Table
 public class Blog {
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    int id;
 
-    private String title;
+    String title;
 
-    private String content;
+    String content;
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @CreationTimestamp
-    private Date pubDate;
+    Date pubDate;
 
     @ManyToOne
     @JoinColumn
-    private User user;
+    @JsonIgnoreProperties("blogList")
+    User user;
 
-    @OneToMany(mappedBy = "blog",cascade = CascadeType.ALL)
-    private List<Image> imageList;
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("blog")
+    List<Image> imageList;
 
     public Blog() {
     }
@@ -36,6 +41,10 @@ public class Blog {
     public Blog(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -78,11 +87,43 @@ public class Blog {
         this.imageList = imageList;
     }
 
-    public int getId() {
-        return id;
+    public Blog(int id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
     }
 
-    public void setId(int id) {
+    public Blog(int id, String title, String content, Date pubDate, User user, List<Image> imageList) {
         this.id = id;
+        this.title = title;
+        this.content = content;
+        this.pubDate = pubDate;
+        this.user = user;
+        this.imageList = imageList;
+    }
+
+    public Blog(int id, String title, String content, List<Image> imageList) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.imageList = imageList;
+    }
+
+    public Blog(int id) {
+
+        this.id = id;
+    }
+
+    public Blog(int id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
+    public Blog(int id, String title, String content, User user, List<Image> imageList) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.user = user;
+        this.imageList = imageList;
     }
 }
