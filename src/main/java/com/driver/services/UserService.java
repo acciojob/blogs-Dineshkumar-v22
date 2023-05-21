@@ -14,34 +14,32 @@ public class UserService {
     BlogService blogService3;
 
     public void createUser(User user){
-        try{
-            userRepository3.save(user);
-        }
-        catch (Exception e){}
 
+        userRepository3.save(user);
     }
 
     public void deleteUser(int userId){
-        try{
+        if(userRepository3.findById(userId).isPresent())
+        {
             userRepository3.deleteById(userId);
         }
-        catch (Exception e){}
     }
 
-    public void updateUser(User user){
-        try{
-            userRepository3.save(user);
-        }
-        catch (Exception e){}
+    public void updateUser(User user) {
+        User currentUser = userRepository3.findByUsername(user.getUsername());
+        if (currentUser != null){
+            currentUser.setUsername(user.getUsername());
+        currentUser.setFirstName(user.getFirstName());
+        currentUser.setLastName(user.getLastName());
+        currentUser.setPassword(user.getPassword());
+
+        userRepository3.save(currentUser);
+    }
+        userRepository3.save(user);
 
     }
 
     public User findUserByUsername(String username){
-
-        try{
-            return userRepository3.findByUsername(username);
-        }
-        catch (Exception e){ return null;}
-
+        return userRepository3.findByUsername(username);
     }
 }
